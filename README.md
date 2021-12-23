@@ -81,6 +81,14 @@ Or to go home and land, change mode to "RTL" (Return To Land):
 ros2 service call /vehicle_1/mavros/set_mode mavros_msgs/srv/SetMode "{custom_mode: "RTL"}"
 ```
 
+## Flying through Foxglove
+
+While in GUIDED mode, you can also control the drone by passing `Twist` messages to the `/vehicle_1/mavros/setpoint_velocity/cmd_vel_unstamped` topic.  These appear to be interpreted in the local frame, _i.e._ not the drone body frame.  Hence Z is vertical, X is East/West and Y is North/South.  With two `teleop` panels in Foxglove, you can achieve a nice manual remote control capability.  Make sure to turn the `angular X` velocities down to +/-0.1 from the default setting of 1, else the rotations are too fast.
+
+![Screenshot of Foxglove Studio dashboard with manual control](foxglove_screenshot.png)
+
+In the example above, the left button array controls vertical translation and rotation, while the right array controls horizontal translation in the X and Y axes.  Also, the publisher box enables camera control and the state topic reports on basic vehicle status.
+
 ## Building the image
 
 On Linux use `make build` then `make push`.
