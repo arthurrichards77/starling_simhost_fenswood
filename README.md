@@ -1,8 +1,8 @@
-#Starling Simhost Fenswood
+# Starling Simhost Fenswood
 
 This is _temporary_ to develop functionality to wrap into either the main Fenswood scenario image or into the new controller example template.
 
-Created new intermediate image with the Fenswood stuff added to the image rather than mounted as a volume.  Goal is to avoid need for student users to download the Fenswood model source material.
+Created new intermediate image with the Fenswood stuff added to the Gazebo simhost image rather than mounted as a volume.  Goal is to avoid need for student users to download the Fenswood model source material.
 
 Also used this as a platform to experiment with "manual" driving of the simulator using ROS2 command line utilities.
 
