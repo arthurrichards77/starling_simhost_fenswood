@@ -1,0 +1,1 @@
+docker exec -it starling_simhost_fenswood_mavros_1 /bin/bash -c "source /opt/ros/foxy/setup.bash;/bin/bash"
