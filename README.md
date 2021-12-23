@@ -22,33 +22,55 @@ docker exec -it starling_simhost_fenswood_mavros_1 /bin/bash -c "source /opt/ros
 ```
 Use the utility batch file ssh_mavros.bat on Windows.
 
-Change mode:
+Exit the container when you're done using Ctrl+D.
+
+### Change mode
+
+Run:
 ```
 ros2 service call /vehicle_1/mavros/set_mode mavros_msgs/srv/SetMode "{custom_mode: "GUIDED"}"
 ```
-Arm:
+On Foxglove you should see the mode change in the `/vehicle_1/mavros/state` topic. 
+
+### Arm
+
+Run:
 ```
 ros2 service call /vehicle_1/mavros/cmd/arming mavros_msgs/srv/CommandBool "{value: True}"
 ```
-Take-off:
+Again, see the state change in Foxglove, or watch the rotors spin up in Gazebo.  
+
+| Move quickly after this step as it'll disarm if there's no take-off command shortly after.
+
+### Take-off
+
+Run:
 ```
 ros2 service call /vehicle_1/mavros/cmd/takeoff mavros_msgs/srv/CommandTOL "{altitude: 20.0}"
 ```
-Monitor:
+You should see the drone take off in the Gazebo and the camera image change in Foxglove. 
+
+You can also try monitoring the relevant MAVROS topics, but this may not work if QGroundControl hasn't been connected as MAVLINK data streams have to be requested.
 ```
 ros2 topic echo /vehicle_1/mavros/global_position/global
 ```
-Note: monitoring may not work if QGroundControl hasn't been connected as MAVLINK data streams have to be requested.
 
-To move, run the following (note: for reasons I don't understand, altitude relative seems to be what's published, -100):
+### Move the drone
+
+Run the following (note: for reasons I don't understand, altitude relative seems to be what's published, -100):
 ```
 ros2 topic pub --once /vehicle_1/mavros/setpoint_position/global geographic_msgs/msg/GeoPoseStamped "{pose:{position:{latitude: 51.423, longitude: -2.671, altitude: 120.0}}}"
 ```
-To move the camera use the command below, with data in range 0.0 (forwards) to 1.57 (straight down):
+
+### Move the camera
+
+Use the command below, with data in range 0.0 (forwards) to 1.57 (straight down):
 ```
-/ros_ws# ros2 topic pub --times 5 /vehicle_1/gimbal_tilt_cmd std_msgs/msg/Float32 "{data: 1.0}"
+ros2 topic pub --times 5 /vehicle_1/gimbal_tilt_cmd std_msgs/msg/Float32 "{data: 1.0}"
 ```
-Note: it seems to need sending several times to ensure relialbe response.
+| Note: it seems to need sending several times to ensure relialbe response.
+
+### Land
 
 To land in current location, run:
 ```
@@ -58,7 +80,6 @@ Or to go home and land, change mode to "RTL" (Return To Land):
 ```
 ros2 service call /vehicle_1/mavros/set_mode mavros_msgs/srv/SetMode "{custom_mode: "RTL"}"
 ```
-Exit the container prompt using Ctrl+D.
 
 ## Building the image
 
